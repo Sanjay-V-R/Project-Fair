@@ -15,7 +15,7 @@ const View = () => {
           <div className="d-flex align-items-center">
             <div> <Edit /> </div>
             <div className="btn"> <a href="" target='_blank'> <i className='fa-brands fa-github'></i></a></div>
-            <button className="btn text danger"> <i className="fa-solid fa-trash"></i></button>
+            <button className="btn text-danger"> <i className="fa-solid fa-trash"></i></button>
           </div>
         </div>
       </div>
