@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import { Card, Modal } from 'react-bootstrap'
+import SERVERURL from '../services/serverurl';
 
-const ProjectCard = () => {
+const ProjectCard = ({ displayData }) => {
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -9,9 +10,9 @@ const ProjectCard = () => {
   return (
     <>
       <Card onClick={handleShow} className='shadow btn'>
-        <Card.Img variant='top' height={'200px'} src='' />
+        <Card.Img variant='top' height={'200px'} src={`${SERVERURL}/uploads/${displayData?.projectImg}`} />
         <Card.Body>
-          <Card.Title>Title</Card.Title>
+          <Card.Title>{displayData?.title}</Card.Title>
         </Card.Body>
       </Card>
       <Modal size='lg' show={show} onHide={handleClose}>
@@ -21,17 +22,17 @@ const ProjectCard = () => {
         <Modal.Body>
           <div className="row">
             <div className="col-lg-6">
-              <img src="" alt="title" className="img-fluid" />
+              <img src={`${SERVERURL}/uploads/${displayData?.projectImg}`} alt="title" className="img-fluid" />
             </div>
             <div className="col-lg-6">
-              <h3>Title</h3>
-              <h6><span className='fw-bolder'>Language Used :</span> <span className='text-danger'>React</span></h6>
-              <p style={{ textAlign: 'justify' }}> Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+              <h3>{displayData?.title}</h3>
+              <h6><span className='fw-bolder'>Language Used :</span> <span className='text-danger'>{displayData?.languages}</span></h6>
+              <p style={{ textAlign: 'justify' }}><span className='fw-bolder'>Project Overview : </span>{displayData?.overview}</p>
             </div>
           </div>
           <div className="float-start mt-2">
-            <a href="" target='_blank' className='btn btn-secondary'> <i className='fa-brands fa-github'></i></a>
-            <a href="" target='_blank' className='btn btn-secondary ms-2'> <i className='fa-solid fa-link'></i></a>
+            <a href={displayData?.github} target='_blank' className='btn btn-secondary'> <i className='fa-brands fa-github'></i></a>
+            <a href={displayData?.website} target='_blank' className='btn btn-secondary ms-2'> <i className='fa-solid fa-link'></i></a>
           </div>
         </Modal.Body>
       </Modal>

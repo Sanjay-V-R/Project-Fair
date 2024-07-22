@@ -1,19 +1,21 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import loginImg from '../assets/images/landingImg.webp'
 import { FloatingLabel, Form, Spinner } from 'react-bootstrap'
 import { Link, useNavigate } from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { loginAPI, registerAPI } from '../services/allAPI';
+import { tokenAuthContext } from '../contexts/AuthContext';
 
 const Auth = ({ insideRegister }) => {
+  const { isAuthorised, setIsAuthorised } = useContext(tokenAuthContext)
   const [isLoggedin, setIsLoggedin] = useState(false)
   const navigate = useNavigate()
   const [userData, setUserData] = useState({
     username: "", email: "", password: ""
   })
 
-  console.log(userData);
+  // console.log(userData);
 
   const handleRegister = async (e) => {
     e.preventDefault()
@@ -21,7 +23,7 @@ const Auth = ({ insideRegister }) => {
       // api call
       try {
         const result = await registerAPI(userData)
-        console.log(result);
+        // console.log(result);
         if (result.status == 200) {
           toast.success(`Welcome ${result?.data?.username}... Please login to explore our website!!!`)
           setUserData({ username: "", email: "", password: "" })
@@ -47,11 +49,12 @@ const Auth = ({ insideRegister }) => {
       // api call
       try {
         const result = await loginAPI(userData)
-        console.log(result);
+        // console.log(result);
         if (result.status == 200) {
           setIsLoggedin(true)
           sessionStorage.setItem("user", JSON.stringify(result.data.user))
           sessionStorage.setItem("token", result.data.token)
+          setIsAuthorised(true)
           setTimeout(() => {
             // toast.warning(`Welcome ${result.data.user.username}...`)
             setUserData({
@@ -119,7 +122,7 @@ const Auth = ({ insideRegister }) => {
                     :
                     <div className="mt-3">
                       <button onClick={handleLogin} className="btn btn-primary mb-2 d-flex">Login
-                        { isLoggedin && <Spinner animation="border" className='ms-1' variant="light" /> }
+                        {isLoggedin && <Spinner animation="border" className='ms-1' variant="light" />}
                       </button>
                       <p>New User? Click here to <Link to="/register">Register</Link></p>
                     </div>
